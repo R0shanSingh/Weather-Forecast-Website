@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <header class="h-14 bg-sky-950 text-white flex justify-center items-center">
+        <form action="">
+            <span class="rounded-md sm:w-96 px-3 py-1 bg-white">
+                <input id="search-box" class="sm:w-96 rounded px-3 outline-none text-black" type="text" list="locations" name="Location-Box" placeholder="Location">
+                <datalist id="locations">
+                    <option value="Kolkata"></option>
+                    <option value="Delhi"></option>
+                </datalist>
+                <button type="button" id="search-btn" class=" text-black border-solid px-2"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </span>
+        </form>
+        <button id="current-location" class="mx-4"><i class="fa-solid fa-lg fa-location-dot"></i></button>
+    </header>
+    <main class="border-2 border-solid border-black flex justify-center items-center bg-gray-800 ">
+        <section class=" rounded-xl  bg-main-image bg-cover bg-no-repeat my-24">
+            <section class="flex flex-wrap backdrop-blur-sm">
+                <div class="sm:w-96 w-full">
+                    <div class=" my-5 flex justify-evenly">
+                        <div class="self-center">
+                            <h2 id="location" class="text-xl font-bold text-slate-800">Location</h2>
+                            <p id="text"></p>
+                            <!-- <p>chances of Rain <span id="rain"></span></p> -->
+                            <p>Temperature <span id="temperature"></span></p>
+                        </div>
+                        <div>
+                            <img id="logo" class="w-20" src="./images/weather-icons/sun.gif" alt="">
+                        </div>
+                    </div>
+                    <div class=" flex flex-col gap-10 mt-10">
+                        <!-- <h2 class="mx-10 font-bold text-slate-600">About Weather</h2> -->
+                        <div class="flex flex-wrap justify-evenly">
+                            <div class="custom-mini-card ">
+                                <div class="m-2 flex justify-between"><img class="w-6" src="./images/weather-icons/celsius.gif" alt=""><span>Feels</span></div>
+                                <div id="feels" class="mx-4 my-2 text-center font-semibold text-gray-700"></div>
+                            </div>
+                            <div class="custom-mini-card ">
+                                <div class="m-2 flex justify-between"><img class="w-6" src="./images/weather-icons/wind-speed.gif" alt="">Wind</div>
+                                <div id="wind" class="mx-4 my-2 text-center font-semibold text-gray-700"></div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap justify-evenly">
+                            <div class="custom-mini-card">
+                                <div class="m-2 flex justify-between"><img class="w-6" src="./images/weather-icons/drop.gif" alt="">RH</div>
+                                <div id="humidity" class="mx-4 my-2 text-center font-semibold text-gray-700"></div>
+                            </div>
+                            <div class="custom-mini-card">
+                                <div class="m-2 flex justify-between"><img class="w-6" src="./images/weather-icons/uv-index.gif" alt="">UV</div>
+                                <div id="uv" class="mx-4 my-2 text-center font-semibold text-gray-700"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <aside class="sm:w-64 w-full my-10 sm:border-l-2 sm:border-solid sm:border-black">
+                    <h2 class="text-center">5-Days Forecast</h2>
+                    <div class="mx-3">
+                        <div class="custom-list">
+                            <span class="days">Date</span>
+                            <span class="days-icon">Condition</span>
+                            <span class="days-temp">Temp</span>
+                        </div>
+                        <div class="day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-12" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                        <div class=" day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-12" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                        <div class=" day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-12" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                        <div class=" day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-12" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                        <!-- <div class=" day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-18" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                        <div class=" day custom-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-18" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span> -->
+                        <!-- </div> -->
+                        <div class=" day border-none custom-last-list">
+                            <span class="days">date</span>
+                            <span class="days-icon"> <img class="w-12" src="./images/weather-icons/sun.gif" alt=""></span>
+                            <span class="days-temp">temp</span>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+        </section>
+    </main>
+    <footer >this is footer</footer>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
