@@ -16,8 +16,12 @@ currentLocationBtn.addEventListener("click",()=>{
 function currentLocationForecast(){
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
+        document.getElementById("main").style.display = "block";
+        document.getElementById("default").style.display = "none";
     } else {
         console.error('Geolocation is not supported by this browser.');
+        document.getElementById("main").style.display = "none";
+        document.getElementById("default").style.display = "block";
     }
     
     function success(position) {
@@ -30,6 +34,8 @@ function currentLocationForecast(){
     
     function error() {
         console.error('Unable to retrieve your location');
+        document.getElementById("main").style.display = "none";
+        document.getElementById("default").style.display = "block";
     }
     
     
@@ -48,14 +54,35 @@ const searchBtn = document.getElementById("search-btn");
 
 searchBtn.addEventListener("click", () => {
     const searchBox = document.getElementById("search-box");
+    if(searchBox.value===""){
+        alert("Search Box must not be empty");
+        return;
+    }
     fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${searchBox.value}&days=6`).then((response) => {
         return response.json();
     }).then((data) => {
+        updateRecentList(searchBox.value);
         updateData(data);
     }).catch((error) => {
-        
+        alert("Invalid Location");
     });
 });
+
+function updateRecentList(location){
+
+    let recentSearchList = JSON.parse(localStorage.getItem('recentSearchList')) || [];
+    if(recentSearchList.includes(location)){
+        return;
+    }
+    recentSearchList.push(location);
+    let dataListBox = document.getElementById("locations");
+    let newListItem = document.createElement('option');
+
+    newListItem.value = location;
+    dataListBox.appendChild(newListItem);
+    // dataListBox.innerHTML="";
+    localStorage.setItem('students', JSON.stringify(recentSearchList));
+}
 
 function updateData(data) {
     document.getElementById("search-box").value = "";
@@ -92,7 +119,6 @@ function updateData(data) {
         day[i-1].children[0].innerHTML = data.forecast.forecastday[i].date;
         day[i-1].children[1].children[0].setAttribute("src" , data.forecast.forecastday[i].day.condition.icon );
         day[i-1].children[2].innerHTML =`${data.forecast.forecastday[i].day.mintemp_c} / ${data.forecast.forecastday[i].day.maxtemp_c}`;
-
     }
 }
 
