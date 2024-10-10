@@ -11,7 +11,7 @@
     <header class="h-14 bg-sky-950 text-white flex justify-center items-center">
         <form action="">
             <span class="rounded-md sm:w-96 px-3 py-1 bg-white">
-                <input id="search-box" class="sm:w-96 rounded px-3 outline-none text-black" type="text" list="locations" name="Location-Box" placeholder="Location">
+                <input id="search-box" class="sm:w-96 rounded px-3 outline-none text-black" type="text" list="locations" name="Location-Box" placeholder="City or City Country">
                 <datalist id="locations">
                     <option value="Kolkata"></option>
                     <option value="Delhi"></option>
@@ -21,8 +21,16 @@
         </form>
         <button id="current-location" class="mx-4"><i class="fa-solid fa-lg fa-location-dot"></i></button>
     </header>
+    <!-- <main class="border-2 border-solid border-black flex justify-center items-center bg-gray-800 ">
+    </main> -->
     <main class="border-2 border-solid border-black flex justify-center items-center bg-gray-800 ">
-        <section class=" rounded-xl  bg-main-image bg-cover bg-no-repeat my-24">
+        <section id="deafault" class="rounded-xl  bg-main-image bg-cover bg-no-repeat my-24 ">
+            <section class="md:w-96 md:h-96 p-10 flex flex-col justify-center items-center backdrop-blur-sm">
+                <h2 class="font-bold text-center text-2xl text-red-700">Location is not Allowed</h2>
+                <p class="font-bold text-green-500 text-center my-10">Please allow the location for getting current Location Forecast or Search for any City.</p>
+            </section>
+        </section>
+        <section id="main" class="hidden rounded-xl  bg-main-image bg-cover bg-no-repeat my-24">
             <section class="flex flex-wrap backdrop-blur-sm">
                 <div class="sm:w-96 w-full">
                     <div class=" my-5 flex justify-evenly">

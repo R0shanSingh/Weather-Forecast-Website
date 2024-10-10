@@ -5,55 +5,60 @@
 // }).then((data)=>{
 //     console.log(data);
 // });
+currentLocationForecast();
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error);
-} else {
-    console.error('Geolocation is not supported by this browser.');
+const currentLocationBtn = document.getElementById("current-location");
+currentLocationBtn.addEventListener("click",()=>{
+    currentLocationForecast();
+});
+
+
+function currentLocationForecast(){
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+        console.error('Geolocation is not supported by this browser.');
+    }
+    
+    function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+    
+        console.log('Latitude:', latitude, 'Longitude:', longitude);
+        fetchWeatherData(latitude, longitude);  // Call function to fetch weather data
+    }
+    
+    function error() {
+        console.error('Unable to retrieve your location');
+    }
+    
+    
+    function fetchWeatherData(latitude, longitude) {
+        fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${latitude},${longitude}&days=6`).then((response) => {
+            return response.json();
+        }).then((data) => {
+            updateData(data);
+        });
+    }
 }
 
-function success(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
 
-    console.log('Latitude:', latitude, 'Longitude:', longitude);
-    fetchWeatherData(latitude, longitude);  // Call function to fetch weather data
-}
-
-function error() {
-    console.error('Unable to retrieve your location');
-}
-
-
-function fetchWeatherData(latitude, longitude) {
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${latitude},${longitude}&days=8`).then((response) => {
-        return response.json();
-    }).then((data) => {
-        updateData(data);
-    });
-}
 
 const searchBtn = document.getElementById("search-btn");
 
-// async function fetchData (key){
-//     const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${key}&days=8`);
-//     response.json();
-//     const data = undefined;
-//     return data;
-// }
-
 searchBtn.addEventListener("click", () => {
     const searchBox = document.getElementById("search-box");
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${searchBox.value}&days=8`).then((response) => {
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${searchBox.value}&days=6`).then((response) => {
         return response.json();
     }).then((data) => {
         updateData(data);
     }).catch((error) => {
-
+        
     });
 });
 
 function updateData(data) {
+    document.getElementById("search-box").value = "";
     let code = data.current.condition.code;
 
     switch (code) {
@@ -77,14 +82,9 @@ function updateData(data) {
     document.getElementById('text').innerHTML = data.current.condition.text;
     document.getElementById('humidity').innerHTML = data.current.humidity;
     document.getElementById('temperature').innerHTML = data.current.temp_c;
-    // document.getElementById('code').innerHTML= data.current.condition.code;
     document.getElementById('feels').innerHTML = data.current.feelslike_c;
-    // document.getElementById('rain').innerHTML= data.current.
     document.getElementById('wind').innerHTML = data.current.wind_mph + " mph";
     document.getElementById('uv').innerHTML = data.current.uv;
-
-    console.log(data);
-
 
     let day = document.getElementsByClassName("day");
     
@@ -96,5 +96,5 @@ function updateData(data) {
     }
 }
 
-// let data;
+
 
