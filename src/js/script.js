@@ -19,7 +19,7 @@ function currentLocationForecast(){
         document.getElementById("main").style.display = "block";
         document.getElementById("default").style.display = "none";
     } else {
-        console.error('Geolocation is not supported by this browser.');
+        alert('Geolocation is not supported by this browser.');
         document.getElementById("main").style.display = "none";
         document.getElementById("default").style.display = "block";
     }
@@ -33,7 +33,7 @@ function currentLocationForecast(){
     }
     
     function error() {
-        console.error('Unable to retrieve your location');
+        alert('Unable to retrieve your location');
         document.getElementById("main").style.display = "none";
         document.getElementById("default").style.display = "block";
     }
