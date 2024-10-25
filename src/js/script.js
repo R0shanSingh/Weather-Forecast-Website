@@ -1,19 +1,27 @@
-// http://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=UttarPara West Bengal&days=1&aqi=no&alerts=no
 
-// let forcastData = fetch("https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=London&days=3").then((response)=>{
-// return response.json();
-// }).then((data)=>{
-//     console.log(data);
-// });
-currentLocationForecast();
+var apiKey = '8506a66184c04aefada153122241610'; //api key
 
-const currentLocationBtn = document.getElementById("current-location");
+currentLocationForecast();// function call to fetch current location forecast
+
+let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
+
+if(recentSearchList.length>0){
+    document.getElementById("locations").innerHTML ="";
+    for(let i = 0;i<recentSearchList.length;i++ ){
+        let newListItem = document.createElement('option');
+        newListItem.value = recentSearchList[i];
+        document.getElementById("locations").appendChild(newListItem);
+    }
+}
+
+
+const currentLocationBtn = document.getElementById("current-location"); // adding eventlistner for location button
 currentLocationBtn.addEventListener("click",()=>{
     currentLocationForecast();
 });
 
 
-function currentLocationForecast(){
+function currentLocationForecast(){ // function to fetch current location
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
         document.getElementById("main").style.display = "block";
@@ -29,7 +37,7 @@ function currentLocationForecast(){
         const longitude = position.coords.longitude;
     
         console.log('Latitude:', latitude, 'Longitude:', longitude);
-        fetchWeatherData(latitude, longitude);  // Call function to fetch weather data
+        fetchWeatherData(latitude, longitude);  // function call to fetch weather data
     }
     
     function error() {
@@ -39,8 +47,8 @@ function currentLocationForecast(){
     }
     
     
-    function fetchWeatherData(latitude, longitude) {
-        fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${latitude},${longitude}&days=6`).then((response) => {
+    function fetchWeatherData(latitude, longitude) { // function to fetch weather data
+        fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=6`).then((response) => {
             return response.json();
         }).then((data) => {
             updateData(data);
@@ -48,17 +56,19 @@ function currentLocationForecast(){
     }
 }
 
+document.getElementById("form").addEventListener("submit",(event)=>{
+    event.preventDefault();
+});
 
+const searchBtn = document.getElementById("search-btn"); 
 
-const searchBtn = document.getElementById("search-btn");
-
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener("click", () => { // adding eventlistner for search button.
     const searchBox = document.getElementById("search-box");
     if(searchBox.value===""){
         alert("Search Box must not be empty");
         return;
     }
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=c7ebed48085847a5a7583708240310&q=${searchBox.value}&days=6`).then((response) => {
+    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${searchBox.value}&days=6`).then((response) => {
         return response.json();
     }).then((data) => {
         updateRecentList(searchBox.value);
@@ -68,24 +78,26 @@ searchBtn.addEventListener("click", () => {
     });
 });
 
-function updateRecentList(location){
+function updateRecentList(location){ // updating recent searchlist
 
-    let recentSearchList = JSON.parse(localStorage.getItem('recentSearchList')) || [];
+    let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
     if(recentSearchList.includes(location)){
         return;
     }
     recentSearchList.push(location);
+    
     let dataListBox = document.getElementById("locations");
     let newListItem = document.createElement('option');
 
     newListItem.value = location;
     dataListBox.appendChild(newListItem);
-    // dataListBox.innerHTML="";
-    localStorage.setItem('students', JSON.stringify(recentSearchList));
+    localStorage.setItem('recentList', JSON.stringify(recentSearchList));
 }
 
 function updateData(data) {
     document.getElementById("search-box").value = "";
+    document.getElementById("main").style.display = "block";
+    document.getElementById("default").style.display = "none";
     let code = data.current.condition.code;
 
     switch (code) {
@@ -116,9 +128,9 @@ function updateData(data) {
     let day = document.getElementsByClassName("day");
     
     for (let i = 1;i<=5;i++){
-        day[i-1].children[0].innerHTML = data.forecast.forecastday[i].date;
+        day[i-1].children[0].innerHTML = `${data.forecast.forecastday[i].date} <br><span class="flex"> <img class="w-6" src="./images/weather-icons/wind-speed.gif" alt=""> &nbsp;${data.forecast.forecastday[i].day.maxwind_mph} mph</span>`;
         day[i-1].children[1].children[0].setAttribute("src" , data.forecast.forecastday[i].day.condition.icon );
-        day[i-1].children[2].innerHTML =`${data.forecast.forecastday[i].day.mintemp_c} / ${data.forecast.forecastday[i].day.maxtemp_c}`;
+        day[i-1].children[2].innerHTML =`${data.forecast.forecastday[i].day.mintemp_c} / ${data.forecast.forecastday[i].day.maxtemp_c} <br> <span class="flex p-2"><img class="w-6" src="./images/weather-icons/drop.gif" alt="">&nbsp; ${data.forecast.forecastday[i].day.avghumidity} RH</span>`;
     }
 }
 
