@@ -18,7 +18,7 @@ It is a weather forecast application developed using JavaScript, HTML, CSS, and 
 # Usage:
 1. View Current Weather: Allow location access to see weather based on your current location.
 2. Search for a City: Enter a city or city-country pair and press search.
-3. Review 5-Day Forecast: See upcoming weather conditions below the current weather display
+3. Review 5-Day Forecast: See upcoming weather conditions.
 
 # Features:
 1. Location-based Weather: Detects the user's location and shows real-time weather.
