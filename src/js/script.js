@@ -20,24 +20,28 @@ currentLocationForecast();// function call to fetch current location forecast
 
 let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
 
-if(recentSearchList.length>0){
-    addDropEvent();
-    document.getElementById("locations").innerHTML ="";
-    for(let i = 0;i<recentSearchList.length;i++ ){
+if(recentSearchList.length>0){ // checks to is there any data in localstorage or not
+    addDropEvent(); // adds events for drop down button.
+    document.getElementById("locations").innerHTML =""; 
+    for(let i = 0;i<recentSearchList.length;i++ ){ // adds data in dropdown
         let newListItem = document.createElement('li');
         newListItem.classList.add("cursor-pointer");
         newListItem.classList.add("hover:text-blue-600");
         newListItem.innerHTML = `${recentSearchList[i]}`;
-        newListItem.addEventListener("click",()=>{
+
+        newListItem.addEventListener("click",()=>{ //adding eventlistner for each element in dropdown.
             document.getElementById("search-box").value = newListItem.innerHTML;
             document.getElementById("drop-up-btn").click();
         })
+
         document.getElementById("locations").appendChild(newListItem);
     }
 }
 
-function addDropEvent(){
+function addDropEvent(){ // function to add drop down and up event listner.
+
     document.getElementById("drop-down-btn").style.display = "inline";
+
     document.getElementById("drop-down-btn").addEventListener("click",()=>{
         document.getElementById("dropdown").style.display="block";
         document.getElementById("drop-down-btn").style.display="none";
@@ -52,16 +56,11 @@ function addDropEvent(){
         document.getElementById("drop-up-btn").style.display="none";
         document.getElementById("drop-up-btn").style.pointerEvents="none";
     })
-
-    let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
-    if(recentSearchList.length>4){
-        // document.getElementById("dropdown").classList.add("overflow-scroll");
-    }
-
 }
 
 
 const currentLocationBtn = document.getElementById("current-location"); // adding eventlistner for location button
+
 currentLocationBtn.addEventListener("click",()=>{
     currentLocationForecast();
 });
@@ -81,8 +80,6 @@ function currentLocationForecast(){ // function to fetch current location
     function success(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-    
-        console.log('Latitude:', latitude, 'Longitude:', longitude);
         fetchWeatherData(latitude, longitude);  // function call to fetch weather data
     }
     
@@ -140,21 +137,21 @@ function updateRecentList(location){ // updating recent searchlist
     addDropEvent();
     document.getElementById("drop-up-btn").click();
     let dataListBox = document.getElementById("locations");
-    // let newListItem = document.createElement('option');
     let newListItem = document.createElement('li');
     newListItem.classList.add("cursor-pointer");
     newListItem.classList.add("hover:text-blue-600");
-    // newListItem.value = location;
     newListItem.innerHTML = location;
-    newListItem.addEventListener("click",()=>{
+
+    newListItem.addEventListener("click",()=>{ // adding eventlistner to each element in dropdown.
         document.getElementById("search-box").value = newListItem.innerHTML;
         document.getElementById("drop-up-btn").click();
     })
+
     dataListBox.appendChild(newListItem);
     localStorage.setItem('recentList', JSON.stringify(recentSearchList));
 }
 
-function updateData(data) {
+function updateData(data) { //function to display data.
     document.getElementById("search-box").value = "";
     document.getElementById("main").style.display = "block";
     document.getElementById("default").style.display = "none";
