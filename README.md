@@ -8,8 +8,7 @@ It is a weather forecast application developed using JavaScript, HTML, CSS, and 
 - [Usage](#Usage)
 - [Features](#Features)
 - [Dependencies](#Dependencies)
-- [API Integration](#Api-integration)
-- [Screenshots](#Screenshots)
+- [Problems](#Problems)
 
 # Setup:
 1. Clone or download the project files.
@@ -32,3 +31,7 @@ It is a weather forecast application developed using JavaScript, HTML, CSS, and 
 1. Weather API: Fetches weather data.
 2. LocalStorage: Stores recent search terms.
 
+# Problems:
+
+1. There might be problem in getting your location to solve this you should use
+    - http://localhost: or http://127.0.0.1: (if you are using localhost to serve the application.)
