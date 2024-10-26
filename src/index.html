@@ -11,14 +11,19 @@
     <!-- header  -->
     <header class="h-14 bg-sky-950 text-white flex justify-center items-center">
         <form id="form">
-            <span class="rounded-md sm:w-96 px-3 py-1 bg-white">
+            <span class=" relative rounded-md sm:w-96 px-3 py-1 bg-white">
                 <input id="search-box" class="sm:w-96 rounded px-3 outline-none text-black" type="text" list="locations" name="Location-Box" placeholder="City or City Country">
-                <datalist id="locations">
-                </datalist>
+                <div id="dropdown" class="absolute bg-black rounded-md right-0 px-4 py-1 max-h-24 overflow-y-auto scrollbar-custom mt-1 hidden">
+                    <ul id="locations">
+                        <li class="cursor-pointer hover:text-blue-600"></li>
+                    </ul>
+                </div>
+                <button type="button" id="drop-down-btn" class=" text-black border-solid px-2 hidden"><i class="fa-solid fa-caret-down"></i></button>
+                <button type="button" id="drop-up-btn" class=" text-black border-solid px-2 hidden"><i class="fa-solid fa-caret-up"></i></button>
                 <button type="button" id="search-btn" class=" text-black border-solid px-2"><i class="fa-solid fa-magnifying-glass"></i></button>
             </span>
         </form>
-        <button id="current-location" class="mx-4"><i class="fa-solid fa-lg fa-location-dot"></i></button>
+        <button id="current-location" class="mx-4"><i class="fa-solid fa-lg fa-location-dot hover:text-blue-600"></i></button>
     </header>
 
     <!-- main-body  -->
@@ -37,8 +42,8 @@
                     <div class=" my-5 flex justify-evenly">
                         <div class="self-center">
                             <h2 id="location" class="text-xl font-bold text-white">Location</h2>
-                            <p id="text"></p>
-                            <p>Temperature <span id="temperature"></span></p>
+                            <p id="text" class="text-gray-300"></p>
+                            <p class="text-gray-300">Temperature : <span id="temperature" class="text-blue-600"></span> <sup>&deg;</sup>C</p>
                         </div>
                         <div>
                             <img id="logo" class="w-20" src="./images/weather-icons/sun.gif" alt="">

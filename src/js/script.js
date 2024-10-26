@@ -1,17 +1,63 @@
 
-var apiKey = '8506a66184c04aefada153122241610'; //api key
+/*Key Functions:
+
+    currentLocationForecast(): Fetches and displays weather data based on the user's current location.
+    fetchWeatherData(latitude, longitude): Fetches weather data from the Weather API using geographic coordinates.
+    updateData(data): Updates the UI elements with weather data (temperature, humidity, condition, etc.).
+    updateRecentList(location): Stores recent search terms in localStorage and updates the dropdown list.
+
+    Event Listeners
+        Form Submit: Prevents default form submission and triggers a search based on input.
+        Search Button: Executes a new search using the inputted city or city + country.
+        Location Button: Gets weather data based on the current GPS location.
+*/
+
+
+
+var apiKey = '6ef1661516834707b28142724242510'; //api key
 
 currentLocationForecast();// function call to fetch current location forecast
 
 let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
 
 if(recentSearchList.length>0){
+    addDropEvent();
     document.getElementById("locations").innerHTML ="";
     for(let i = 0;i<recentSearchList.length;i++ ){
-        let newListItem = document.createElement('option');
-        newListItem.value = recentSearchList[i];
+        let newListItem = document.createElement('li');
+        newListItem.classList.add("cursor-pointer");
+        newListItem.classList.add("hover:text-blue-600");
+        newListItem.innerHTML = `${recentSearchList[i]}`;
+        newListItem.addEventListener("click",()=>{
+            document.getElementById("search-box").value = newListItem.innerHTML;
+            document.getElementById("drop-up-btn").click();
+        })
         document.getElementById("locations").appendChild(newListItem);
     }
+}
+
+function addDropEvent(){
+    document.getElementById("drop-down-btn").style.display = "inline";
+    document.getElementById("drop-down-btn").addEventListener("click",()=>{
+        document.getElementById("dropdown").style.display="block";
+        document.getElementById("drop-down-btn").style.display="none";
+        document.getElementById("drop-down-btn").style.pointerEvents="none";
+        document.getElementById("drop-up-btn").style.display="inline";
+        document.getElementById("drop-up-btn").style.pointerEvents="all";
+    })
+    document.getElementById("drop-up-btn").addEventListener("click",()=>{
+        document.getElementById("dropdown").style.display="none";
+        document.getElementById("drop-down-btn").style.display="inline";
+        document.getElementById("drop-down-btn").style.pointerEvents="all";
+        document.getElementById("drop-up-btn").style.display="none";
+        document.getElementById("drop-up-btn").style.pointerEvents="none";
+    })
+
+    let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
+    if(recentSearchList.length>4){
+        // document.getElementById("dropdown").classList.add("overflow-scroll");
+    }
+
 }
 
 
@@ -48,7 +94,7 @@ function currentLocationForecast(){ // function to fetch current location
     
     
     function fetchWeatherData(latitude, longitude) { // function to fetch weather data
-        fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=6`).then((response) => {
+        fetch(`http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${latitude},${longitude}&days=6`).then((response) => {
             return response.json();
         }).then((data) => {
             updateData(data);
@@ -68,28 +114,42 @@ searchBtn.addEventListener("click", () => { // adding eventlistner for search bu
         alert("Search Box must not be empty");
         return;
     }
-    fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${searchBox.value}&days=6`).then((response) => {
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${searchBox.value}&days=6`)
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Invalid Location");
+        }
         return response.json();
-    }).then((data) => {
+    })
+    .then((data) => {
         updateRecentList(searchBox.value);
         updateData(data);
-    }).catch((error) => {
+    })
+    .catch((error) => {
         alert("Invalid Location");
     });
 });
 
 function updateRecentList(location){ // updating recent searchlist
-
+    
     let recentSearchList = JSON.parse(localStorage.getItem('recentList')) || [];
     if(recentSearchList.includes(location)){
         return;
     }
     recentSearchList.push(location);
-    
+    addDropEvent();
+    document.getElementById("drop-up-btn").click();
     let dataListBox = document.getElementById("locations");
-    let newListItem = document.createElement('option');
-
-    newListItem.value = location;
+    // let newListItem = document.createElement('option');
+    let newListItem = document.createElement('li');
+    newListItem.classList.add("cursor-pointer");
+    newListItem.classList.add("hover:text-blue-600");
+    // newListItem.value = location;
+    newListItem.innerHTML = location;
+    newListItem.addEventListener("click",()=>{
+        document.getElementById("search-box").value = newListItem.innerHTML;
+        document.getElementById("drop-up-btn").click();
+    })
     dataListBox.appendChild(newListItem);
     localStorage.setItem('recentList', JSON.stringify(recentSearchList));
 }
